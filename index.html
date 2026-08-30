@@ -15,25 +15,35 @@
   <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 
   <style>
-    /* Inline overrides for Vapi Widget container responsiveness */
+    /* Section specific demo card formatting */
     .vapi-demo-area {
-      position: relative !important;
-      width: 100% !important;
-      max-width: 480px !important;
-      margin: 30px auto !important;
-      padding: 20px !important;
-      box-sizing: border-box !important;
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      margin: 30px auto 0;
+      padding: 24px;
+      box-sizing: border-box;
       background: #ffffff;
       border: 1px solid #dce5ec;
       border-radius: 18px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.03);
       text-align: center;
     }
-
-    vapi-widget {
-      width: 100% !important;
-      max-width: 100% !important;
-      box-sizing: border-box !important;
+    .vapi-trigger-btn {
+      background-color: #0077ff;
+      color: #ffffff;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(0,119,255,0.25);
+    }
+    .vapi-trigger-btn:hover {
+      background-color: #005bb5;
+      transform: translateY(-1px);
     }
   </style>
 </head>
@@ -442,17 +452,13 @@
     <a href="tel:+12395062748" class="demo-phone">Call Now: +1 (239) 506-2748</a>
     <a href="mailto:omniicallsolutions@gmail.com" class="email-button">✉ Get in Touch</a>
 
-    <!-- Embedded Vapi Chat Widget Section -->
+    <!-- Embedded Vapi Voice Card Container -->
     <div class="vapi-demo-area">
-      <h3 style="margin-top:0; color:#18334a;">AI Voice & Text Assistant</h3>
+      <h3 style="margin-top:0; color:#18334a;">Live Web Assistant</h3>
       <p style="color:#647789; font-size:0.95rem; margin-bottom: 20px;">
-        Type a message or click the microphone to chat live with our AI assistant.
+        Click below to start a live voice conversation directly in your browser.
       </p>
-      
-      <vapi-widget 
-        api-key="545045dc-0a8c-4091-b8fb-c319d3aa250f"
-        assistant-id="e357020d-94f7-4073-a532-573f6a0b037f">
-      </vapi-widget>
+      <button id="vapi-start-btn" class="vapi-trigger-btn">🎙️ Start Voice Call</button>
     </div>
   </div>
 </section>
@@ -491,9 +497,7 @@
   <div class="copyright">© 2026 OmniCall Solutions. All rights reserved.</div>
 </footer>
 
-<!-- =========================
-     JAVASCRIPT HANDLERS
-========================= -->
+<!-- JAVASCRIPT HANDLERS -->
 <script>
   function toggleNumberInquiry() {
     const panel = document.getElementById("numberInquiryPanel");
@@ -584,7 +588,29 @@
   }
 </script>
 
-<!-- Vapi Web Component SDK Script -->
-<script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/vapi-widget.js" async></script>
+<!-- Vapi Official Web SDK Script -->
+<script src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"></script>
+<script>
+  var vapiInstance = null;
+  const vapiApiKey = "545045dc-0a8c-4091-b8fb-c319d3aa250f";
+  const assistantId = "e357020d-94f7-4073-a532-573f6a0b037f";
+  const btn = document.getElementById('vapi-start-btn');
+
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.vapiSDK) {
+      vapiInstance = window.vapiSDK.run({
+        apiKey: vapiApiKey,
+        assistant: assistantId,
+        config: { position: "bottom-right" }
+      });
+    }
+  });
+
+  btn.addEventListener('click', function() {
+    if (vapiInstance) {
+      vapiInstance.start();
+    }
+  });
+</script>
 </body>
 </html>
