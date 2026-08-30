@@ -11,10 +11,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap"
         rel="stylesheet">
-  <!-- External SDKs loaded deferred -->
-  <script src="https://cdn.paddle.com/paddle/v2/paddle.js" defer></script>
-  <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" defer></script>
+  <!-- Paddle.js -->
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 
+  <!-- =========================
+       PHONE NUMBER SECTION STYLES & VAPI OVERRIDES
+       ========================= -->
   <style>
     .phone-requirements-section {
       padding: 100px 20px;
@@ -266,6 +268,19 @@
       line-height: 1.6;
       color: #647789;
     }
+    .vapi-demo-area {
+      width: 100%;
+      max-width: 500px;
+      margin: 30px auto 0;
+      padding: 24px;
+      background: #ffffff;
+      border: 1px solid #dce5ec;
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+      box-sizing: border-box;
+      text-align: center;
+    }
+
     @media (max-width: 800px) {
       .phone-requirements-section {
         padding: 75px 18px;
@@ -285,42 +300,18 @@
       .number-inquiry-panel {
         padding: 24px 18px;
       }
-    }
-    .vapi-demo-area {
-      width: 100%;
-      max-width: 480px;
-      margin: 0 auto;
-      box-sizing: border-box;
-    }
-    @media screen and (max-width: 600px) {
       .vapi-demo-area {
-        width: 100% !important;
-        padding: 0 10px;
-        box-sizing: border-box;
+        width: 100%;
+        padding: 20px 15px;
       }
-    }
-    vapi-widget {
-      --vapi-text-color: #0f172a !important;
-      --vapi-subtext-color: #334155 !important;
-      --vapi-bg-color: #ffffff !important;
-      --vapi-agent-bubble-bg: #f1f5f9 !important;
-      --vapi-agent-bubble-text: #0f172a !important;
-      --vapi-user-bubble-bg: #0b5f91 !important;
-      --vapi-user-bubble-text: #ffffff !important;
-      font-family: inherit;
-    }
-    vapi-widget::part(message-text),
-    vapi-widget::part(transcript),
-    vapi-widget::part(bubble),
-    .vapi-message-content {
-      color: #0f172a !important;
-      opacity: 1 !important;
-      font-weight: 500 !important;
     }
   </style>
 </head>
 <body>
 
+<!-- =========================
+     NAVIGATION
+========================= -->
 <header class="topbar">
   <div class="nav-container">
     <a href="#" class="logo-link">
@@ -328,7 +319,6 @@
     </a>
     <nav class="navigation">
       <a href="#services">Services</a>
-      <a href="#phone-requirements">Numbers</a>
       <a href="#pricing">Plans</a>
       <a href="#demo">AI Demo</a>
       <a href="#contact">Contact</a>
@@ -337,6 +327,9 @@
   </div>
 </header>
 
+<!-- =========================
+     HERO
+========================= -->
 <main>
 <section class="hero">
   <div class="hero-container">
@@ -345,9 +338,7 @@
       <h1>Automate Your Business Calls 24/7 with Custom AI Voice Agents</h1>
       <p class="hero-subtitle">Your Business Never Stops. Neither Should Your AI Receptionist.</p>
       <p class="hero-description">
-        AI voice agents that answer calls 24/7, capture customer details,
-        handle inquiries, orders and booking requests, and automatically
-        organize every conversation for your business.
+        AI voice agents that answer calls 24/7, capture customer details, handle inquiries, orders and booking requests, and automatically organize every conversation for your business.
       </p>
       <div class="email-highlight">
         <span class="email-icon">✉</span>
@@ -367,13 +358,15 @@
         <a href="#pricing" class="secondary-button">View Plans</a>
       </div>
       <p class="hero-bottom-text">
-        Never miss a customer. Never lose important call details.
-        Never let a busy phone line cost you business.
+        Never miss a customer. Never lose important call details. Never let a busy phone line cost you business.
       </p>
     </div>
   </div>
 </section>
 
+<!-- =========================
+     SERVICES
+========================= -->
 <section class="services" id="services">
   <div class="section-container">
     <div class="section-heading">
@@ -418,6 +411,9 @@
   </div>
 </section>
 
+<!-- =========================
+     HOW IT WORKS
+========================= -->
 <section class="how-it-works">
   <div class="section-container">
     <div class="section-heading">
@@ -442,13 +438,16 @@
       </div>
       <div class="step">
         <div class="step-number">04</div>
-        <h3>You Receive Details</h3>
+        <h3>You Receive the Details</h3>
         <p>A detailed email notification is delivered within seconds after the call ends.</p>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ==========================================================
+     BUSINESS PHONE NUMBERS & REGULATORY REQUIREMENTS
+========================================================== -->
 <section class="phone-requirements-section" id="phone-requirements">
   <div class="phone-requirements-container">
     <div class="phone-requirements-heading">
@@ -466,7 +465,7 @@
       <div class="phone-number-options">
         <div class="phone-number-option">
           <h4>Local Numbers</h4>
-          <p>Local business numbers may be available for eligible businesses, subject to applicable country and provider requirements.</p>
+          <p>Local business numbers may be available for eligible businesses, subject to the applicable country and provider requirements.</p>
         </div>
         <div class="phone-number-option">
           <h4>National Numbers</h4>
@@ -474,9 +473,10 @@
         </div>
         <div class="phone-number-option">
           <h4>Toll-Free & Special Numbers</h4>
-          <p>Toll-free, premium, vanity or other special number types may have additional requirements or costs. If you require such a number, you may purchase it directly and we can assist you with integration.</p>
+          <p>Toll-free, premium, vanity or other special number types may have additional requirements or costs. If you require such a number, you may purchase it directly and we can assist you with the integration process.</p>
         </div>
       </div>
+
       <details class="regulatory-details">
         <summary>View Regulatory Requirements</summary>
         <div class="regulatory-content">
@@ -495,10 +495,12 @@
           </p>
         </div>
       </details>
+
       <div class="number-assistance-area">
         <h3>Need a Business Number?</h3>
         <p>Tell us what you need and we will review your requirements and guide you through the appropriate phone-number and compliance process.</p>
         <button type="button" class="number-assistance-button" onclick="toggleNumberInquiry()">Request Number Assistance</button>
+
         <div id="numberInquiryPanel" class="number-inquiry-panel">
           <h3>Tell Us What You Need</h3>
           <p class="number-inquiry-intro">
@@ -508,7 +510,8 @@
             <input type="hidden" name="access_key" value="454e0046-a77f-4126-849b-972690b9bb14">
             <input type="hidden" name="subject" value="OmniCall Solutions - Business Number Inquiry">
             <input type="hidden" name="from_name" value="OmniCall Solutions Website">
-            <input type="checkbox" id="inquiryBotcheck" name="botcheck" style="display:none;" aria-hidden="true">
+            <input type="checkbox" name="botcheck" style="display:none;">
+            
             <div class="number-form-grid">
               <div class="number-form-field">
                 <label for="inquiryName">Your Name *</label>
@@ -599,6 +602,9 @@
   </div>
 </section>
 
+<!-- =========================
+     PRICING
+========================= -->
 <section class="pricing" id="pricing">
   <div class="section-container">
     <div class="section-heading">
@@ -611,10 +617,7 @@
         <div class="plan-name starter-name">STARTER</div>
         <h3>Essential AI Receptionist</h3>
         <p class="plan-description">A simple way for small businesses to start answering calls with AI.</p>
-        <div class="setup-price">
-          <strong>$149</strong>
-          <span>one-time setup</span>
-        </div>
+        <div class="setup-price"><strong>$149</strong> <span>one-time setup</span></div>
         <div class="monthly-price">$99 <span>/ month</span></div>
         <div class="minutes"><strong>300 minutes</strong> included monthly</div>
         <ul class="features">
@@ -636,10 +639,7 @@
         <div class="plan-name gold-name">GOLD</div>
         <h3>Business AI Receptionist</h3>
         <p class="plan-description">More call capacity with organized customer information and AI chat for growing businesses.</p>
-        <div class="setup-price">
-          <strong>$249</strong>
-          <span>one-time setup</span>
-        </div>
+        <div class="setup-price"><strong>$249</strong> <span>one-time setup</span></div>
         <div class="monthly-price">$199 <span>/ month</span></div>
         <div class="minutes"><strong>700 minutes</strong> included monthly</div>
         <ul class="features">
@@ -663,10 +663,7 @@
         <div class="plan-name premium-name">PREMIUM</div>
         <h3>Advanced AI Call Solution</h3>
         <p class="plan-description">Higher call capacity with a more customized AI workflow and advanced business automation for established businesses.</p>
-        <div class="setup-price">
-          <strong>$399</strong>
-          <span>one-time setup</span>
-        </div>
+        <div class="setup-price"><strong>$399</strong> <span>one-time setup</span></div>
         <div class="monthly-price">$349 <span>/ month</span></div>
         <div class="minutes"><strong>1,200 minutes</strong> included monthly</div>
         <ul class="features">
@@ -703,36 +700,29 @@
   </div>
 </section>
 
+<!-- =========================
+     DEMO / AI TEAM
+========================= -->
 <section class="demo" id="demo">
   <div class="demo-container">
     <span class="section-label">TRY IT YOURSELF</span>
     <h2>Talk to Our AI Team 24/7</h2>
     <p class="demo-lead">Want to hear our AI voice agent in action?</p>
     <p>Call our dedicated AI demo line anytime and experience how it answers questions, understands customer requests, captures important details, and handles business calls.</p>
-    <p>Need something different? Tell us what your business needs. We can discuss a custom AI call solution, tailored call flow, monthly minutes, and features designed around your specific workflow.</p>
     <a href="tel:+12395062748" class="demo-phone">Call Now: +1 (239) 506-2748</a>
     <a href="mailto:omniicallsolutions@gmail.com" class="email-button">✉ Get in Touch</a>
-    
+
+    <!-- Vapi Interactive Voice Call Wrapper -->
     <div class="vapi-demo-area">
-      <h3>Chat With Our AI Team</h3>
-      <p>Have a question about OmniCall Solutions? Chat with our AI assistant or use voice to speak with it directly.</p>
-      <vapi-widget
-        public-key="545045dc-0a8c-4091-b8fb-c319d3aa250f"
-        assistant-id="e357020d-94f7-4073-a532-573f6a0b037f"
-        mode="chat"
-        theme="light"
-        size="full"
-        radius="large"
-        main-label="Talk to OmniCall AI"
-        first-message="Hi! Welcome to OmniCall Solutions. I'm here to help you learn about our AI voice, chat, and business solutions. How can I assist you today?"
-        empty-chat-message="Hello! How can we help you today?"
-        start-button-text="Talk by Voice"
-        end-button-text="End Voice">
-      </vapi-widget>
+      <h3 style="margin-top:0; color:#18334a;">Speak With Our AI Voice Assistant</h3>
+      <p style="color:#647789; font-size:0.95rem;">Click the voice button on the bottom right of your screen to talk directly with our OmniCall AI team.</p>
     </div>
   </div>
 </section>
 
+<!-- =========================
+     FINAL CTA
+========================= -->
 <section class="final-cta">
   <div class="section-container">
     <h2>Ready to Stop Missing Business Calls?</h2>
@@ -745,6 +735,9 @@
 </section>
 </main>
 
+<!-- =========================
+     FOOTER
+========================= -->
 <footer id="contact">
   <div class="footer-container">
     <div class="footer-brand">
@@ -758,11 +751,12 @@
       <a href="mailto:omniicallsolutions@gmail.com">Contact Us</a>
     </div>
   </div>
-  <div class="copyright">
-    © 2026 OmniCall Solutions. All rights reserved.
-  </div>
+  <div class="copyright">© 2026 OmniCall Solutions. All rights reserved.</div>
 </footer>
 
+<!-- =========================
+     JAVASCRIPT HANDLERS
+========================= -->
 <script>
   function toggleNumberInquiry() {
     const panel = document.getElementById("numberInquiryPanel");
@@ -819,14 +813,11 @@
     numberInquirySubmit.disabled = false;
     numberInquirySubmit.textContent = "Send Inquiry";
   });
+</script>
 
-  window.addEventListener('DOMContentLoaded', function() {
-    if (typeof Paddle !== 'undefined') {
-      Paddle.Initialize({
-        token: "live_25ad9c46ac473e727a642ba2e08"
-      });
-    }
-  });
+<!-- Paddle Checkout Script -->
+<script>
+  Paddle.Initialize({ token: "live_25ad9c46ac473e727a642ba2e08" });
 
   const paddlePlans = {
     starter: [
@@ -849,19 +840,46 @@
       console.error("Invalid Paddle plan:", plan);
       return;
     }
-    if (typeof Paddle !== 'undefined') {
-      Paddle.Checkout.open({
-        settings: {
-          displayMode: "overlay",
-          theme: "light",
-          locale: "en"
-        },
-        items: items
-      });
-    } else {
-      console.error("Paddle SDK is not loaded yet.");
-    }
+    Paddle.Checkout.open({
+      settings: { displayMode: "overlay", theme: "light", locale: "en" },
+      items: items
+    });
   }
+</script>
+
+<!-- Vapi Voice SDK Script Fix -->
+<script src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"></script>
+<script>
+  var vapiInstance = null;
+  window.addEventListener('load', function() {
+    vapiInstance = window.vapiSDK.run({
+      apiKey: "545045dc-0a8c-4091-b8fb-c319d3aa250f",
+      assistant: "e357020d-94f7-4073-a532-573f6a0b037f",
+      config: {
+        position: "bottom-right",
+        offset: "20px",
+        width: "50px",
+        height: "50px",
+        idle: {
+          icon: "https://unpkg.com/lucide-static@0.321.0/icons/phone.svg",
+          color: "rgb(11, 95, 145)",
+          type: "pill",
+          title: "Talk to OmniCall AI"
+        },
+        loading: {
+          color: "rgb(11, 95, 145)",
+          type: "pill",
+          title: "Connecting..."
+        },
+        active: {
+          icon: "https://unpkg.com/lucide-static@0.321.0/icons/phone-off.svg",
+          color: "rgb(220, 38, 38)",
+          type: "pill",
+          title: "End Voice Call"
+        }
+      }
+    });
+  });
 </script>
 </body>
 </html>
