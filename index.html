@@ -377,16 +377,33 @@
       box-sizing: border-box !important;
     }
 
-    /* Darken the assistant's reply text inside the chat/voice transcript.
-       .vapi-conversation-area is the widget's own message list container;
-       text-gray-400 / text-gray-500 are the low-contrast classes it uses
-       for assistant messages by default. */
-    .vapi-widget-wrapper .vapi-conversation-area .text-gray-400,
-    .vapi-widget-wrapper .vapi-conversation-area .text-gray-500 {
-      color: #27303a !important;
+    /* Darken the assistant's reply text.
+       Assistant messages are left-aligned (justify-start); the visitor's
+       own messages are right-aligned (justify-end) and untouched here.
+       This targets the layout pattern instead of a guessed color class,
+       so it works even if the exact gray shade/class differs. */
+    .vapi-widget-wrapper .vapi-conversation-area .justify-start,
+    .vapi-widget-wrapper .vapi-conversation-area .justify-start * {
+      opacity: 1 !important;
+    }
+    .vapi-widget-wrapper .vapi-conversation-area .justify-start p,
+    .vapi-widget-wrapper .vapi-conversation-area .justify-start span,
+    .vapi-widget-wrapper .vapi-conversation-area .justify-start div {
+      color: #1f2937 !important;
     }
 
     @media (max-width: 640px) {
+
+      /* Pin the floating panel's left/right edges instead of only
+         capping its width — this keeps it inside the viewport even if
+         its width comes from something other than a w-* class. */
+      .vapi-widget-wrapper.fixed,
+      .vapi-widget-wrapper .fixed {
+        left: 8px !important;
+        right: 8px !important;
+        width: auto !important;
+        max-width: calc(100vw - 16px) !important;
+      }
 
       .vapi-widget-wrapper,
       .vapi-widget-wrapper .w-72,
@@ -426,7 +443,7 @@
         class="logo">
     </a>
 
-    <nav class="navigation">
+    <nav class="navigation" id="mainNav">
       <a href="#services">Services</a>
       <a href="#pricing">Plans</a>
       <a href="#demo">AI Demo</a>
@@ -436,6 +453,17 @@
     <a href="#pricing" class="nav-button">
       View Plans
     </a>
+
+    <button
+      class="nav-toggle"
+      id="navToggle"
+      onclick="toggleMobileNav()"
+      aria-label="Open menu"
+      aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
   </div>
 
@@ -885,10 +913,8 @@
       <div class="number-assistance-area">
 
         <h3>
-          Need a Business Number?
-        </h3>
-
-        <p>
+          Need a Business Number
+          <p>
           Tell us what you need and we will review your requirements
           and guide you through the appropriate phone-number and
           compliance process.
@@ -1335,14 +1361,14 @@
 
         <div class="setup-price">
 
-          <strong>$249</strong>
+          <strong>$149</strong>
 
           <span>one-time setup</span>
 
         </div>
 
         <div class="monthly-price">
-          $199 <span>/ month</span>
+          $99 <span>/ month</span>
         </div>
 
         <div class="minutes">
@@ -1412,14 +1438,14 @@
 
         <div class="setup-price">
 
-          <strong>$349</strong>
+          <strong>$249</strong>
 
           <span>one-time setup</span>
 
         </div>
 
         <div class="monthly-price">
-          $299 <span>/ month</span>
+          $199 <span>/ month</span>
         </div>
 
         <div class="minutes">
@@ -1491,14 +1517,14 @@
 
         <div class="setup-price">
 
-          <strong>$499</strong>
+          <strong>$399</strong>
 
           <span>one-time setup</span>
 
         </div>
 
         <div class="monthly-price">
-          $449 <span>/ month</span>
+          $349 <span>/ month</span>
         </div>
 
         <div class="minutes">
@@ -1584,7 +1610,7 @@
       </div>
 
       <a
-        href="mailto:support@omnicallsolutions.online?subject=OmniCall%20Solutions%20-%20Custom%20Plan"
+        href="mailto:omniicallsolutions@gmail.com?subject=OmniCall%20Solutions%20-%20Custom%20Plan"
         class="custom-button">
 
         Request Custom Plan
@@ -1760,7 +1786,7 @@
         Refund Policy
       </a>
 
-      <a href="mailto:support@omnicallsolutions.online">
+      <a href="mailto:omniicallsolutions@gmail.com">
         Contact Us
       </a>
 
@@ -1912,6 +1938,54 @@
     numberInquirySubmit.textContent =
       "Send Inquiry";
 
+  });
+
+</script>
+
+
+<!-- =========================
+     MOBILE NAV TOGGLE
+========================= -->
+
+<script>
+
+  function toggleMobileNav() {
+
+    var nav = document.getElementById('mainNav');
+    var btn = document.getElementById('navToggle');
+
+    var isOpen = nav.classList.toggle('mobile-open');
+
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+  }
+
+  document.addEventListener('click', function (e) {
+
+    var nav = document.getElementById('mainNav');
+    var btn = document.getElementById('navToggle');
+
+    if (!nav || !btn) return;
+
+    if (
+      nav.classList.contains('mobile-open') &&
+      !nav.contains(e.target) &&
+      !btn.contains(e.target)
+    ) {
+      nav.classList.remove('mobile-open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+
+  });
+
+  document.querySelectorAll('.navigation a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      document.getElementById('mainNav').classList.remove('mobile-open');
+      document.getElementById('navToggle').classList.remove('open');
+      document.getElementById('navToggle').setAttribute('aria-expanded', 'false');
+    });
   });
 
 </script>
