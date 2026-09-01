@@ -913,8 +913,10 @@
       <div class="number-assistance-area">
 
         <h3>
-          Need a Business Number
-          <p>
+          Need a Business Number?
+        </h3>
+
+        <p>
           Tell us what you need and we will review your requirements
           and guide you through the appropriate phone-number and
           compliance process.
@@ -1610,7 +1612,7 @@
       </div>
 
       <a
-        href="mailto: support@omnicallsolutions.online?subject=OmniCall%20Solutions%20-%20Custom%20Plan"
+        href="mailto:support@omnicallsolutions.online?subject=OmniCall%20Solutions%20-%20Custom%20Plan"
         class="custom-button">
 
         Request Custom Plan
@@ -1670,7 +1672,7 @@
     </a>
 
     <a
-      href="mailto: support@omnicallsolutions.online"
+      href="mailto:support@omnicallsolutions.online"
       class="email-button">
 
       ✉ Get in Touch
@@ -1694,7 +1696,7 @@
     assistant-id="e357020d-94f7-4073-a532-573f6a0b037f"
     mode="hybrid"
     theme="light"
-    size="compact"
+    size="full"
     border-radius="large"
     title="Talk to OmniCall AI"
     chat-first-message="Hello! How can we help you today?"
@@ -1988,6 +1990,78 @@
     });
   });
 
+</script>
+
+
+<!-- =========================
+     VAPI WIDGET MOBILE FIX (runtime)
+     Finds the widget's actual floating panel by its computed position
+     (not by guessing a class name) and pins it inside the screen.
+========================= -->
+
+<script>
+(function () {
+
+  function fixVapiWidgetMobile() {
+
+    if (window.innerWidth > 640) return;
+
+    var vapiEls = document.querySelectorAll('[class*="vapi" i], vapi-widget');
+
+    vapiEls.forEach(function (root) {
+
+      var els = [root].concat(
+        Array.prototype.slice.call(root.querySelectorAll('*'))
+      );
+
+      els.forEach(function (el) {
+
+        var cs = window.getComputedStyle(el);
+
+        if (cs.position !== 'fixed') return;
+
+        var rect = el.getBoundingClientRect();
+
+        var overflowsLeft = rect.left < 0;
+        var overflowsRight = rect.right > window.innerWidth;
+        var tooWide = rect.width > window.innerWidth - 16;
+
+        if (overflowsLeft || overflowsRight || tooWide) {
+          el.style.setProperty('left', '8px', 'important');
+          el.style.setProperty('right', '8px', 'important');
+          el.style.setProperty('width', 'auto', 'important');
+          el.style.setProperty('max-width', 'calc(100vw - 16px)', 'important');
+        }
+
+      });
+
+    });
+
+  }
+
+  window.addEventListener('load', function () {
+
+    fixVapiWidgetMobile();
+
+    var tries = 0;
+
+    var interval = setInterval(function () {
+      fixVapiWidgetMobile();
+      tries += 1;
+      if (tries > 20) clearInterval(interval);
+    }, 500);
+
+  });
+
+  window.addEventListener('resize', fixVapiWidgetMobile);
+
+  var vapiObserver = new MutationObserver(function () {
+    fixVapiWidgetMobile();
+  });
+
+  vapiObserver.observe(document.body, { childList: true, subtree: true });
+
+})();
 </script>
 
 
