@@ -396,7 +396,18 @@
 
       /* Pin the floating panel's left/right edges instead of only
          capping its width — this keeps it inside the viewport even if
-         its width comes from something other than a w-* class. */
+         its width comes from something other than a w-* class.
+         min-width is reset here too: if the panel itself has a
+         min-width set higher than our max-width, min-width always
+         wins in CSS regardless of max-width, which would silently
+         cap how narrow it's allowed to get no matter what else we set. */
+      .vapi-widget-wrapper,
+      .vapi-widget-wrapper.fixed,
+      .vapi-widget-wrapper .fixed,
+      vapi-widget {
+        min-width: 0 !important;
+      }
+
       .vapi-widget-wrapper.fixed,
       .vapi-widget-wrapper .fixed {
         left: 8px !important;
