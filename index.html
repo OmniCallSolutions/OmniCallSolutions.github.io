@@ -418,6 +418,28 @@
         max-height: 70vh !important;
       }
 
+      /* The message input has a default min-width that refuses to
+         shrink below its content size, which pushes the send/voice
+         buttons off the right edge. This is a CSS rule (not JS) on
+         purpose — the widget re-renders often enough that a
+         JavaScript-set inline style gets silently overwritten, while
+         a stylesheet rule like this keeps applying regardless. */
+      .vapi-widget-wrapper input,
+      .vapi-widget-wrapper textarea,
+      vapi-widget input,
+      vapi-widget textarea {
+        min-width: 0 !important;
+        flex: 1 1 0% !important;
+      }
+
+      /* Give the buttons next to the input a hard floor so they can't
+         be squeezed to nothing, and stop the row itself from
+         stretching past the panel. */
+      .vapi-widget-wrapper input + *,
+      .vapi-widget-wrapper textarea + * {
+        flex-shrink: 0 !important;
+      }
+
     }
 
   </style>
@@ -1696,7 +1718,7 @@
     assistant-id="e357020d-94f7-4073-a532-573f6a0b037f"
     mode="hybrid"
     theme="light"
-    size="full"
+    size="compact"
     border-radius="large"
     title="Talk to OmniCall AI"
     chat-first-message="Hello! How can we help you today?"
