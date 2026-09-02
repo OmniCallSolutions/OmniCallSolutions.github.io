@@ -418,26 +418,34 @@
         max-height: 70vh !important;
       }
 
-      /* The message input has a default min-width that refuses to
-         shrink below its content size, which pushes the send/voice
-         buttons off the right edge. This is a CSS rule (not JS) on
-         purpose — the widget re-renders often enough that a
-         JavaScript-set inline style gets silently overwritten, while
-         a stylesheet rule like this keeps applying regardless. */
+      /* Several rows inside the widget (the header title + icons, the
+         input + send/voice buttons) push their icon buttons off the
+         right edge, because text/input elements default to never
+         shrinking below their content width in a flex row. Removing
+         that default floor from everything inside the widget fixes
+         every row at once, instead of chasing each one individually.
+         This only removes the floor — it doesn't force anything to
+         shrink unless its layout already calls for it. */
+      .vapi-widget-wrapper *,
+      vapi-widget * {
+        min-width: 0 !important;
+      }
+
+      /* Protect icon buttons specifically so they keep their size
+         instead of being squeezed to nothing once their siblings can
+         shrink. */
+      .vapi-widget-wrapper button,
+      .vapi-widget-wrapper svg,
+      vapi-widget button,
+      vapi-widget svg {
+        flex-shrink: 0 !important;
+      }
+
       .vapi-widget-wrapper input,
       .vapi-widget-wrapper textarea,
       vapi-widget input,
       vapi-widget textarea {
-        min-width: 0 !important;
         flex: 1 1 0% !important;
-      }
-
-      /* Give the buttons next to the input a hard floor so they can't
-         be squeezed to nothing, and stop the row itself from
-         stretching past the panel. */
-      .vapi-widget-wrapper input + *,
-      .vapi-widget-wrapper textarea + * {
-        flex-shrink: 0 !important;
       }
 
     }
