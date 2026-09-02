@@ -2036,81 +2036,130 @@
 
 <!-- =========================
      VAPI WIDGET MOBILE FIX (runtime)
-     Finds the widget's actual floating panel by its computed position
-     (not by guessing a class name) and pins it inside the screen.
+     Doesn't guess any class or element name. Instead it measures what
+     is actually rendered on screen, finds anything poking past the
+     right edge of the phone, and pulls it back in directly.
+
+     Two safeguards against the widget's own open/close animation:
+     - it waits briefly after each change before measuring, so it
+       doesn't catch a mid-animation frame and lock that size in
+     - it undoes its own previous correction before each re-measuring,
+       so a bad fix from one pass can't carry over into the next
 ========================= -->
 
 <script>
 (function () {
 
+  var BUFFER = 8;
+  var FIXED_ATTR = 'data-vapi-mobile-fixed';
+
+  function resetPreviousFixes() {
+    var previouslyFixed = document.querySelectorAll('[' + FIXED_ATTR + ']');
+    previouslyFixed.forEach(function (el) {
+      el.style.removeProperty('left');
+      el.style.removeProperty('right');
+      el.style.removeProperty('width');
+      el.style.removeProperty('max-width');
+      el.style.removeProperty('min-width');
+      el.style.removeProperty('box-sizing');
+      el.removeAttribute(FIXED_ATTR);
+    });
+  }
+
   function fixVapiWidgetMobile() {
 
     if (window.innerWidth > 640) return;
 
-    var vapiEls = document.querySelectorAll('[class*="vapi" i], vapi-widget');
+    resetPreviousFixes();
 
-    vapiEls.forEach(function (root) {
+    var roots = document.querySelectorAll('[class*="vapi" i], vapi-widget');
 
-      var els = [root].concat(
-        Array.prototype.slice.call(root.querySelectorAll('*'))
-      );
+    roots.forEach(function (root) {
 
-      els.forEach(function (el) {
+      var stack = [root];
 
-        var cs = window.getComputedStyle(el);
+      while (stack.length) {
 
-        if (cs.position !== 'fixed') return;
+        var el = stack.pop();
+
+        if (!el || el.nodeType !== 1) continue;
 
         var rect = el.getBoundingClientRect();
 
-        var overflowsLeft = rect.left < 0;
-        var overflowsRight = rect.right > window.innerWidth;
-        var tooWide = rect.width > window.innerWidth - 16;
+        // Skip small elements (the collapsed launcher button etc.) —
+        // we only ever want to correct the expanded panel and its
+        // contents, never a normally-small closed button.
+        if (rect.width < 80 || rect.height < 80) continue;
 
-        if (overflowsLeft || overflowsRight || tooWide) {
-          el.style.setProperty('left', '8px', 'important');
-          el.style.setProperty('right', '8px', 'important');
-          el.style.setProperty('width', 'auto', 'important');
-          el.style.setProperty('max-width', 'calc(100vw - 16px)', 'important');
+        var overflowsRight = rect.right > window.innerWidth;
+        var overflowsLeft = rect.left < 0;
+
+        if (overflowsRight || overflowsLeft) {
+
+          var cs = window.getComputedStyle(el);
+
+          if (cs.position === 'fixed' || cs.position === 'absolute') {
+            el.style.setProperty('left', BUFFER + 'px', 'important');
+            el.style.setProperty('right', BUFFER + 'px', 'important');
+            el.style.setProperty('width', 'auto', 'important');
+            el.style.setProperty(
+              'max-width',
+              'calc(100vw - ' + (BUFFER * 2) + 'px)',
+              'important'
+            );
+          } else {
+            var available = window.innerWidth - rect.left - BUFFER;
+            if (available > 20) {
+              el.style.setProperty('max-width', available + 'px', 'important');
+              el.style.setProperty('box-sizing', 'border-box', 'important');
+              el.style.setProperty('min-width', '0', 'important');
+            }
+          }
+
+          el.setAttribute(FIXED_ATTR, '1');
+
+          // This element is now corrected — don't also correct its
+          // children in this pass, since fixing the parent usually
+          // resolves them too.
+          continue;
+
         }
 
-      });
+        var kids = el.children;
+        for (var i = 0; i < kids.length; i++) {
+          stack.push(kids[i]);
+        }
 
-    });
+      }
 
-    // The message input box has a default browser min-width that refuses
-    // to shrink below its content size. On a narrow panel this pushes the
-    // send/voice buttons out past the right edge. Letting it shrink fixes
-    // that without changing anything visually on wider screens.
-    document.querySelectorAll(
-      '[class*="vapi" i] input, [class*="vapi" i] textarea, ' +
-      'vapi-widget input, vapi-widget textarea'
-    ).forEach(function (el) {
-      el.style.setProperty('min-width', '0', 'important');
-      el.style.setProperty('flex', '1 1 0%', 'important');
     });
 
   }
 
+  var debounceTimer = null;
+
+  function scheduleFixVapiWidgetMobile() {
+    if (debounceTimer) clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(fixVapiWidgetMobile, 250);
+  }
+
   window.addEventListener('load', function () {
 
-    fixVapiWidgetMobile();
+    scheduleFixVapiWidgetMobile();
 
     var tries = 0;
 
     var interval = setInterval(function () {
-      fixVapiWidgetMobile();
+      scheduleFixVapiWidgetMobile();
       tries += 1;
       if (tries > 20) clearInterval(interval);
     }, 500);
 
   });
 
-  window.addEventListener('resize', fixVapiWidgetMobile);
+  window.addEventListener('resize', scheduleFixVapiWidgetMobile);
 
-  var vapiObserver = new MutationObserver(function () {
-    fixVapiWidgetMobile();
-  });
+  var vapiObserver = new MutationObserver(scheduleFixVapiWidgetMobile);
 
   vapiObserver.observe(document.body, { childList: true, subtree: true });
 
