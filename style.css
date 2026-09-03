@@ -876,36 +876,41 @@ footer {
     justify-content: flex-start;
     gap: 13px;
   }
-  }
-/* ===== OmniCall Vapi Widget - Mobile Fix ===== */
-html, body {
-  overflow-x: hidden !important;
-  max-width: 100vw !important;
+}
+ /* --- OmniCall Widget Mobile Fix --- */
+#omnicall-launcher, 
+.omnicall-launcher,
+.talk-to-omnicall-btn,
+div[class*="Talk_to_OmniCall"] {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  left: auto !important;
+  width: auto !important;
+  max-width: 320px !important;
+  transform: none !important;
+  box-sizing: border-box !important;
 }
 
-/* Force the chat widget to fit inside mobile screen */
-@media screen and (max-width: 600px) {
-  /* Vapi default selectors + your custom widget */
-  #vapi-widget,
-  #vapi-container,
-  div[id*="vapi"],
-  div[class*="vapi"],
-  iframe[id*="vapi"],
-  div[style*="position: fixed"][style*="bottom"][style*="right"] {
-    width: calc(100vw - 20px) !important;
-    max-width: calc(100vw - 20px) !important;
-    min-width: 0 !important;
-    left: 10px !important;
-    right: 10px !important;
-    bottom: 10px !important;
-    box-sizing: border-box !important;
-  }
+/* Chat window - keep inside viewport */
+#omnicall-chat-widget,
+.omnicall-chat-container,
+.omnicall-widget,
+div[class*="omnicall-chat"] {
+  position: fixed !important;
+  width: 380px !important;
+  max-width: calc(100vw - 24px) !important;
+  right: 12px !important;
+  left: auto !important;
+  box-sizing: border-box !important;
+}
 
-  /* Inner content / iframe */
-  div[id*="vapi"] iframe,
-  div[class*="vapi"] iframe,
-  #vapi-widget iframe {
-    width: 100% !important;
-    max-width: 100% !important;
+@media (max-width: 480px) {
+  #omnicall-chat-widget,
+  .omnicall-chat-container {
+    width: calc(100vw - 24px) !important;
+    right: 12px !important;
+    left: 12px !important;
+    bottom: 12px !important;
   }
 }
