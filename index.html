@@ -11,7 +11,7 @@
   <meta name="description"
         content="Automate your business calls 24/7 with custom AI voice agents. Answer calls, capture customer details, handle inquiries, orders and booking requests, and receive detailed email notifications within seconds.">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?V=5">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -358,110 +358,6 @@
 
     }
 
-  </style>
-
-  <!-- =========================
-       VAPI WIDGET FIXES
-       - keeps the widget inside the page on small screens
-       - darkens the assistant's reply text so it's readable
-       ========================= -->
-  <style>
-
-    .vapi-demo-area {
-      max-width: 100%;
-      overflow: hidden;
-    }
-
-    .vapi-widget-wrapper {
-      max-width: 100% !important;
-      box-sizing: border-box !important;
-    }
-
-    /* Darken the assistant's reply text.
-       Assistant messages are left-aligned (justify-start); the visitor's
-       own messages are right-aligned (justify-end) and untouched here.
-       This targets the layout pattern instead of a guessed color class,
-       so it works even if the exact gray shade/class differs. */
-    .vapi-widget-wrapper .vapi-conversation-area .justify-start,
-    .vapi-widget-wrapper .vapi-conversation-area .justify-start * {
-      opacity: 1 !important;
-    }
-    .vapi-widget-wrapper .vapi-conversation-area .justify-start p,
-    .vapi-widget-wrapper .vapi-conversation-area .justify-start span,
-    .vapi-widget-wrapper .vapi-conversation-area .justify-start div {
-      color: #1f2937 !important;
-    }
-
-    @media (max-width: 640px) {
-
-      /* Pin the floating panel's left/right edges instead of only
-         capping its width — this keeps it inside the viewport even if
-         its width comes from something other than a w-* class.
-         min-width is reset here too: if the panel itself has a
-         min-width set higher than our max-width, min-width always
-         wins in CSS regardless of max-width, which would silently
-         cap how narrow it's allowed to get no matter what else we set. */
-      .vapi-widget-wrapper,
-      .vapi-widget-wrapper.fixed,
-      .vapi-widget-wrapper .fixed,
-      vapi-widget {
-        min-width: 0 !important;
-      }
-
-      .vapi-widget-wrapper.fixed,
-      .vapi-widget-wrapper .fixed {
-        left: 8px !important;
-        right: 8px !important;
-        width: auto !important;
-        max-width: calc(100vw - 16px) !important;
-      }
-
-      .vapi-widget-wrapper,
-      .vapi-widget-wrapper .w-72,
-      .vapi-widget-wrapper .w-96,
-      .vapi-widget-wrapper [class*="w-["],
-      .vapi-widget-wrapper [class*="h-["] {
-        width: 100% !important;
-        max-width: calc(100vw - 32px) !important;
-      }
-
-      .vapi-widget-wrapper [class*="h-["] {
-        max-height: 70vh !important;
-      }
-
-      /* Several rows inside the widget (the header title + icons, the
-         input + send/voice buttons) push their icon buttons off the
-         right edge, because text/input elements default to never
-         shrinking below their content width in a flex row. Removing
-         that default floor from everything inside the widget fixes
-         every row at once, instead of chasing each one individually.
-         This only removes the floor — it doesn't force anything to
-         shrink unless its layout already calls for it. */
-      .vapi-widget-wrapper *,
-      vapi-widget * {
-        min-width: 0 !important;
-      }
-
-      /* Protect icon buttons specifically so they keep their size
-         instead of being squeezed to nothing once their siblings can
-         shrink. */
-      .vapi-widget-wrapper button,
-      .vapi-widget-wrapper svg,
-      vapi-widget button,
-      vapi-widget svg {
-        flex-shrink: 0 !important;
-      }
-
-      .vapi-widget-wrapper input,
-      .vapi-widget-wrapper textarea,
-      vapi-widget input,
-      vapi-widget textarea {
-        flex: 1 1 0% !important;
-      }
-
-    }
-
-  </style>
 
 </head>
 
@@ -2031,132 +1927,6 @@
     });
   });
 
-</script>
-
-
-<!-- =========================
-     VAPI WIDGET MOBILE FIX (runtime)
-     Doesn't guess any class or element name. Instead it measures what
-     is actually rendered on screen, finds anything poking past the
-     right edge of the phone, and pulls it back in directly.
-
-     Two safeguards against the widget's own open/close animation:
-     - it waits briefly after each change before measuring, so it
-       doesn't catch a mid-animation frame and lock that size in
-     - it undoes its own previous correction before each re-measuring,
-       so a bad fix from one pass can't carry over into the next
-========================= -->
-
-<script>
-(function () {
-
-  var BUFFER = 8;
-  var FIXED_ATTR = 'data-vapi-mobile-fixed';
-
-  function resetPreviousFixes() {
-    var previouslyFixed = document.querySelectorAll('[' + FIXED_ATTR + ']');
-    previouslyFixed.forEach(function (el) {
-      el.style.removeProperty('left');
-      el.style.removeProperty('right');
-      el.style.removeProperty('width');
-      el.style.removeProperty('max-width');
-      el.style.removeProperty('min-width');
-      el.style.removeProperty('box-sizing');
-      el.removeAttribute(FIXED_ATTR);
-    });
-  }
-
-  function fixVapiWidgetMobile() {
-
-    if (window.innerWidth > 640) return;
-
-    resetPreviousFixes();
-
-    var roots = document.querySelectorAll('[class*="vapi" i], vapi-widget');
-
-    roots.forEach(function (root) {
-
-      var stack = [root];
-
-      while (stack.length) {
-
-        var el = stack.pop();
-
-        if (!el || el.nodeType !== 1) continue;
-
-        var rect = el.getBoundingClientRect();
-
-        // Skip small elements (the collapsed launcher button etc.) —
-        // we only ever want to correct the expanded panel and its
-        // contents, never a normally-small closed button.
-        if (rect.width < 80 || rect.height < 80) continue;
-
-        var overflowsRight = rect.right > window.innerWidth;
-        var overflowsLeft = rect.left < 0;
-
-        if (overflowsRight || overflowsLeft) {
-
-          var cs = window.getComputedStyle(el);
-
-          if (cs.position === 'fixed' || cs.position === 'absolute') {
-            el.style.setProperty('left', BUFFER + 'px', 'important');
-            el.style.setProperty('right', BUFFER + 'px', 'important');
-            el.style.setProperty('width', 'auto', 'important');
-            el.style.setProperty(
-              'max-width',
-              'calc(100vw - ' + (BUFFER * 2) + 'px)',
-              'important'
-            );
-          } else {
-            var available = window.innerWidth - rect.left - BUFFER;
-            if (available > 20) {
-              el.style.setProperty('max-width', available + 'px', 'important');
-              el.style.setProperty('box-sizing', 'border-box', 'important');
-              el.style.setProperty('min-width', '0', 'important');
-            }
-          }
-
-          el.setAttribute(FIXED_ATTR, '1');
-
-          // This element is now corrected — don't also correct its
-          // children in this pass, since fixing the parent usually
-          // resolves them too.
-          continue;
-
-        }
-
-        var kids = el.children;
-        for (var i = 0; i < kids.length; i++) {
-          stack.push(kids[i]);
-        }
-
-      }
-
-    });
-
-  }
-
-  window.addEventListener('load', function () {
-
-    fixVapiWidgetMobile();
-
-    // Runs continuously for as long as the page is open — not capped
-    // to a handful of tries. Because it resets its own previous fix
-    // before every check, even a mid-animation misfire corrects
-    // itself on the very next tick instead of getting stuck.
-    setInterval(fixVapiWidgetMobile, 400);
-
-  });
-
-  window.addEventListener('resize', fixVapiWidgetMobile);
-
-  var vapiObserver = new MutationObserver(fixVapiWidgetMobile);
-
-  vapiObserver.observe(document.body, { childList: true, subtree: true });
-
-})();
-</script>
-
 
 <!-- =========================
      PADDLE CHECKOUT
@@ -2273,7 +2043,42 @@
   }
 
 </script>
-
+<!-- FINAL FIX - DO NOT DELETE vapi-widget TAG ABOVE -->
+<script>
+(function(){
+  function fix(){
+    if(window.innerWidth > 640) return;
+    var vapi = document.querySelector('vapi-widget');
+    if(!vapi || !vapi.shadowRoot) return;
+    var root = vapi.shadowRoot;
+    
+    if(!root.getElementById('fix')){
+      var s = document.createElement('style');
+      s.id = 'fix';
+      s.textContent = `
+        .fixed, [style*="fixed"] {
+          left: 8px !important;
+          right: 8px !important;
+          width: auto !important;
+          max-width: calc(100vw - 16px) !important;
+          min-width: 0 !important;
+          transform: none !important;
+        }
+      `;
+      root.appendChild(s);
+    }
+    root.querySelectorAll('.fixed, [style*="fixed"]').forEach(function(el){
+      if(el.getBoundingClientRect().width > window.innerWidth){
+        el.style.setProperty('left','8px','important');
+        el.style.setProperty('right','8px','important');
+        el.style.setProperty('width','auto','important');
+        el.style.setProperty('max-width','calc(100vw - 16px)','important');
+      }
+    });
+  }
+  window.addEventListener('load', function(){ fix(); setInterval(fix, 500); });
+})();
+</script>
 
 </body>
 </html>
