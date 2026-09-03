@@ -2043,42 +2043,10 @@
   }
 
 </script>
-<!-- FINAL FIX - DO NOT DELETE vapi-widget TAG ABOVE -->
-<script>
-(function(){
-  function fix(){
-    if(window.innerWidth > 640) return;
-    var vapi = document.querySelector('vapi-widget');
-    if(!vapi || !vapi.shadowRoot) return;
-    var root = vapi.shadowRoot;
-    
-    if(!root.getElementById('fix')){
-      var s = document.createElement('style');
-      s.id = 'fix';
-      s.textContent = `
-        .fixed, [style*="fixed"] {
-          left: 8px !important;
-          right: 8px !important;
-          width: auto !important;
-          max-width: calc(100vw - 16px) !important;
-          min-width: 0 !important;
-          transform: none !important;
-        }
-      `;
-      root.appendChild(s);
-    }
-    root.querySelectorAll('.fixed, [style*="fixed"]').forEach(function(el){
-      if(el.getBoundingClientRect().width > window.innerWidth){
-        el.style.setProperty('left','8px','important');
-        el.style.setProperty('right','8px','important');
-        el.style.setProperty('width','auto','important');
-        el.style.setProperty('max-width','calc(100vw - 16px)','important');
-      }
-    });
-  }
-  window.addEventListener('load', function(){ fix(); setInterval(fix, 500); });
-})();
-</script>
-
+<style>
+@media (max-width:640px){ vapi-widget{ display:none !important; } }
+</style>
+</body>
+</html>
 </body>
 </html>
