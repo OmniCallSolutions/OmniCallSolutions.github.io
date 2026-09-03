@@ -11,7 +11,7 @@
   <meta name="description"
         content="Automate your business calls 24/7 with custom AI voice agents. Answer calls, capture customer details, handle inquiries, orders and booking requests, and receive detailed email notifications within seconds.">
 
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2044,44 +2044,10 @@
     });
 
   }
-
-</script>
-<!-- FINAL FIX - DO NOT DELETE vapi-widget TAG ABOVE -->
-<script>
-(function(){
-  function fix(){
-    if(window.innerWidth > 640) return;
-    var vapi = document.querySelector('vapi-widget');
-    if(!vapi || !vapi.shadowRoot) return;
-    var root = vapi.shadowRoot;
-    
-    if(!root.getElementById('fix')){
-      var s = document.createElement('style');
-      s.id = 'fix';
-      s.textContent = `
-        .fixed, [style*="fixed"] {
-          left: 8px !important;
-          right: 8px !important;
-          width: auto !important;
-          max-width: calc(100vw - 16px) !important;
-          min-width: 0 !important;
-          transform: none !important;
-        }
-      `;
-      root.appendChild(s);
-    }
-    root.querySelectorAll('.fixed, [style*="fixed"]').forEach(function(el){
-      if(el.getBoundingClientRect().width > window.innerWidth){
-        el.style.setProperty('left','8px','important');
-        el.style.setProperty('right','8px','important');
-        el.style.setProperty('width','auto','important');
-        el.style.setProperty('max-width','calc(100vw - 16px)','important');
-      }
-    });
-  }
-  window.addEventListener('load', function(){ fix(); setInterval(fix, 500); });
-})();
-</script>
-
+<style>
+@media (max-width:640px){ vapi-widget{ display:none !important; } }
+</style>
+</body>
+</html>
 </body>
 </html>
