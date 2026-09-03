@@ -6,7 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>OmniCall Solutions | AI Voice Agents for Business</title>
+  <title>OmniCall Solutions | AI Voice & Chat Agents for Business</title>
 
   <meta name="description"
         content="Automate your business calls 24/7 with custom AI voice agents. Answer calls, capture customer details, handle inquiries, orders and booking requests, and receive detailed email notifications within seconds.">
@@ -2136,30 +2136,21 @@
 
   }
 
-  var debounceTimer = null;
-
-  function scheduleFixVapiWidgetMobile() {
-    if (debounceTimer) clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(fixVapiWidgetMobile, 250);
-  }
-
   window.addEventListener('load', function () {
 
-    scheduleFixVapiWidgetMobile();
+    fixVapiWidgetMobile();
 
-    var tries = 0;
-
-    var interval = setInterval(function () {
-      scheduleFixVapiWidgetMobile();
-      tries += 1;
-      if (tries > 20) clearInterval(interval);
-    }, 500);
+    // Runs continuously for as long as the page is open — not capped
+    // to a handful of tries. Because it resets its own previous fix
+    // before every check, even a mid-animation misfire corrects
+    // itself on the very next tick instead of getting stuck.
+    setInterval(fixVapiWidgetMobile, 400);
 
   });
 
-  window.addEventListener('resize', scheduleFixVapiWidgetMobile);
+  window.addEventListener('resize', fixVapiWidgetMobile);
 
-  var vapiObserver = new MutationObserver(scheduleFixVapiWidgetMobile);
+  var vapiObserver = new MutationObserver(fixVapiWidgetMobile);
 
   vapiObserver.observe(document.body, { childList: true, subtree: true });
 
