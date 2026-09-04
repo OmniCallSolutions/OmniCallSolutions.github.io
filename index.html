@@ -2036,43 +2036,64 @@
 
 <!-- =========================
      VAPI WIDGET MOBILE FIX (runtime)
-     Doesn't guess any class or element name. Instead it measures what
-     is actually rendered on screen, finds anything poking past the
-     right edge of the phone, and pulls it back in directly.
 
-     Root cause of the previous version still cutting off the
-     send/mic buttons: once it found and fixed the outer floating
-     panel, it stopped there and never checked inside it — so an
-     inner row (the text input + buttons) that overflows on its own,
-     independently of the panel, was never even looked at. This
-     version keeps checking every level, not just the first thing
-     it finds and fixes.
+     Different strategy from before. The widget renders itself as a
+     floating panel using position:fixed, which is what lets it hover
+     over the whole page independent of any container — and it's why
+     pinning its left/right edges kept failing: the widget re-renders
+     itself and quietly resets its own position, wiping out whatever
+     we set a moment earlier.
+
+     Instead of continuing to fight that, this removes it from
+     "floating" mode entirely: any part of the widget found rendering
+     with position:fixed gets switched to position:relative, so it
+     becomes normal content sitting inside its section on the page —
+     like this heading or paragraph — instead of a popup hovering over
+     the viewport. Normal in-page content cannot poke off the edge of
+     the screen, because it is placed within its container, which is
+     already width-constrained to the page.
+
+     After de-floating, it still walks everything inside and shrinks
+     anything that's individually wider than the space available,
+     as a backup in case something inside (like the input/button row)
+     has its own fixed width independent of the outer panel.
 ========================= -->
 
 <script>
 (function () {
 
   var BUFFER = 8;
-  var FIXED_ATTR = 'data-vapi-mobile-fixed';
 
-  function resetPreviousFixes() {
-    var previouslyFixed = document.querySelectorAll('[' + FIXED_ATTR + ']');
-    previouslyFixed.forEach(function (el) {
-      el.style.removeProperty('left');
-      el.style.removeProperty('right');
-      el.style.removeProperty('width');
-      el.style.removeProperty('max-width');
-      el.style.removeProperty('min-width');
-      el.style.removeProperty('box-sizing');
-      el.removeAttribute(FIXED_ATTR);
-    });
+  function deFloat(el) {
+    el.style.setProperty('position', 'relative', 'important');
+    el.style.setProperty('top', 'auto', 'important');
+    el.style.setProperty('left', 'auto', 'important');
+    el.style.setProperty('right', 'auto', 'important');
+    el.style.setProperty('bottom', 'auto', 'important');
+    el.style.setProperty('transform', 'none', 'important');
+    el.style.setProperty('width', '100%', 'important');
+    el.style.setProperty('max-width', '100%', 'important');
+    el.style.setProperty('min-width', '0', 'important');
+    el.style.setProperty('box-sizing', 'border-box', 'important');
+    el.style.setProperty('margin', '12px auto', 'important');
+    el.setAttribute('data-vapi-deflated', '1');
+  }
+
+  function shrinkIfTooWide(el) {
+    var rect = el.getBoundingClientRect();
+    if (rect.width < 40 || rect.height < 20) return;
+    var available = window.innerWidth - rect.left - BUFFER;
+    if (rect.right > window.innerWidth - BUFFER && available > 20) {
+      el.style.setProperty('max-width', available + 'px', 'important');
+      el.style.setProperty('box-sizing', 'border-box', 'important');
+      el.style.setProperty('min-width', '0', 'important');
+      el.style.setProperty('flex-shrink', '1', 'important');
+    }
   }
 
   function fixVapiWidgetMobile() {
 
     if (window.innerWidth > 640) return;
-
-    resetPreviousFixes();
 
     var roots = document.querySelectorAll('[class*="vapi" i], vapi-widget');
 
@@ -2083,54 +2104,17 @@
       while (stack.length) {
 
         var el = stack.pop();
-
         if (!el || el.nodeType !== 1) continue;
 
-        var rect = el.getBoundingClientRect();
+        var cs = window.getComputedStyle(el);
 
-        // Skip small elements (the collapsed launcher button etc.) —
-        // we only ever want to correct the expanded panel and its
-        // contents, never a normally-small closed button.
-        if (rect.width < 80 || rect.height < 80) continue;
-
-        var overflowsRight = rect.right > window.innerWidth;
-        var overflowsLeft = rect.left < 0;
-
-        if (overflowsRight || overflowsLeft) {
-
-          var cs = window.getComputedStyle(el);
-
-          if (cs.position === 'fixed' || cs.position === 'absolute') {
-            el.style.setProperty('left', BUFFER + 'px', 'important');
-            el.style.setProperty('right', BUFFER + 'px', 'important');
-            el.style.setProperty('width', 'auto', 'important');
-            el.style.setProperty(
-              'max-width',
-              'calc(100vw - ' + (BUFFER * 2) + 'px)',
-              'important'
-            );
-          } else {
-            var available = window.innerWidth - rect.left - BUFFER;
-            if (available > 20) {
-              el.style.setProperty('max-width', available + 'px', 'important');
-              el.style.setProperty('box-sizing', 'border-box', 'important');
-              el.style.setProperty('min-width', '0', 'important');
-              el.style.setProperty('flex-shrink', '1', 'important');
-            }
-          }
-
-          el.setAttribute(FIXED_ATTR, '1');
-
-          // IMPORTANT: do NOT stop here. Shrinking this element does
-          // not guarantee everything inside it now fits — an input
-          // box or button row can still hold its own intrinsic width
-          // and poke out the side even after its parent panel has
-          // been pulled back onto the screen. So we still walk into
-          // this element's children below, re-measuring them fresh
-          // (the browser recalculates layout the moment we read
-          // getBoundingClientRect again) rather than assuming the
-          // parent fix trickles down automatically.
-
+        if (cs.position === 'fixed') {
+          deFloat(el);
+          // Still walk its children below (not "continue"-ing past
+          // them) so the backup shrink check further down can catch
+          // anything inside that's independently too wide.
+        } else {
+          shrinkIfTooWide(el);
         }
 
         var kids = el.children;
@@ -2145,21 +2129,13 @@
   }
 
   window.addEventListener('load', function () {
-
     fixVapiWidgetMobile();
-
-    // Runs continuously for as long as the page is open — not capped
-    // to a handful of tries. Because it resets its own previous fix
-    // before every check, even a mid-animation misfire corrects
-    // itself on the very next tick instead of getting stuck.
     setInterval(fixVapiWidgetMobile, 400);
-
   });
 
   window.addEventListener('resize', fixVapiWidgetMobile);
 
   var vapiObserver = new MutationObserver(fixVapiWidgetMobile);
-
   vapiObserver.observe(document.body, { childList: true, subtree: true });
 
 })();
