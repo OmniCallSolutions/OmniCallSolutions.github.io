@@ -2040,11 +2040,13 @@
      is actually rendered on screen, finds anything poking past the
      right edge of the phone, and pulls it back in directly.
 
-     Two safeguards against the widget's own open/close animation:
-     - it waits briefly after each change before measuring, so it
-       doesn't catch a mid-animation frame and lock that size in
-     - it undoes its own previous correction before each re-measuring,
-       so a bad fix from one pass can't carry over into the next
+     Root cause of the previous version still cutting off the
+     send/mic buttons: once it found and fixed the outer floating
+     panel, it stopped there and never checked inside it — so an
+     inner row (the text input + buttons) that overflows on its own,
+     independently of the panel, was never even looked at. This
+     version keeps checking every level, not just the first thing
+     it finds and fixes.
 ========================= -->
 
 <script>
@@ -2113,15 +2115,21 @@
               el.style.setProperty('max-width', available + 'px', 'important');
               el.style.setProperty('box-sizing', 'border-box', 'important');
               el.style.setProperty('min-width', '0', 'important');
+              el.style.setProperty('flex-shrink', '1', 'important');
             }
           }
 
           el.setAttribute(FIXED_ATTR, '1');
 
-          // This element is now corrected — don't also correct its
-          // children in this pass, since fixing the parent usually
-          // resolves them too.
-          continue;
+          // IMPORTANT: do NOT stop here. Shrinking this element does
+          // not guarantee everything inside it now fits — an input
+          // box or button row can still hold its own intrinsic width
+          // and poke out the side even after its parent panel has
+          // been pulled back onto the screen. So we still walk into
+          // this element's children below, re-measuring them fresh
+          // (the browser recalculates layout the moment we read
+          // getBoundingClientRect again) rather than assuming the
+          // parent fix trickles down automatically.
 
         }
 
