@@ -920,7 +920,7 @@
               Additional regulatory documentation may be requested
               during the provider's review process.
             </li>
-            <li>
+                        <li>
               Number availability and approval are determined by the
               telecommunications provider and applicable country rules.
             </li>
@@ -1177,6 +1177,48 @@
                   </label>
                 </div>
               </div>
+               <!-- COMPLIANCE QUESTIONS -->
+
+              <div class="number-form-field full-width">
+
+                <label>
+                  Regulatory & Documentation Readiness
+                </label>
+
+                <div class="number-checkbox-group">
+                  <label class="number-checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="read_regulatory_information"
+                      value="Yes - I have read the regulatory information">
+                    <span>
+                      I have read the regulatory information above.
+                    </span>
+                  </label>
+                  <label class="number-checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="ready_for_business_information"
+                      value="Yes - I am prepared to provide required business information">
+                    <span>
+                      I understand that the provider may require
+                      business address, registration, authorized
+                      representative or other business information.
+                    </span>
+                  </label>
+                  <label class="number-checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="ready_for_identity_verification"
+                      value="Yes - I understand identity/supporting documents may be required">
+                    <span>
+                      I understand that identity verification or
+                      supporting documents may be required depending
+                      on the country and number type.
+                    </span>
+                  </label>
+                </div>
+              </div>
               <!-- CONCERNS -->
               <div class="number-form-field full-width">
                 <label for="inquiryConcerns">
@@ -1253,13 +1295,13 @@
           $199 <span>/ month</span>
         </div>
         <div class="minutes">
-          <strong>300 minutes</strong>
+          <strong>350 minutes</strong>
           included monthly
         </div>
         <ul class="features">
           <li>✓ Dedicated AI voice agent</li>
           <li>✓ One business phone number</li>
-          <li>✓ 300 call minutes monthly</li>
+          <li>✓ 350 call minutes monthly</li>
           <li>✓ 24/7 automated call answering</li>
           <li>✓ Customer inquiry handling</li>
           <li>✓ Customer details captured</li>
@@ -1352,29 +1394,17 @@
           <li>✓ Everything in Gold</li>
           <li>✓ 1,200 call minutes monthly</li>
           <li>✓ Dedicated AI Agent Team</li>
-
           <li>✓ Advanced customized call flow</li>
-
           <li>✓ Advanced AI website chat agent</li>
-
           <li>✓ Advanced structured information collection</li>
-
           <li>✓ Google Sheets integration</li>
-
           <li>✓ Detailed email notification after calls</li>
-
           <li>✓ Customized information collection</li>
-
           <li>✓ Business-specific FAQs & responses</li>
-
           <li>✓ Advanced order & booking workflows</li>
-
           <li>✓ Advanced CRM & customer-management workflows</li>
-
           <li>✓ Advanced calendar & appointment workflows</li>
-
           <li>✓ Lead qualification & follow-up automation</li>
-
           <li>✓ Multiple business-system integrations</li>
           <li>✓ Ongoing AI agent optimization</li>
         </ul>
@@ -1447,10 +1477,11 @@
       href="mailto:support@omnicallsolutions.online"
       class="email-button">
       ✉ Get in Touch
-    </a>
+       </a>
     <!-- =========================
      VAPI AI CHAT + VOICE
 ========================= -->
+
 <div class="vapi-demo-area">
   <h3>Chat With Our AI Team</h3>
   <p>
@@ -1473,6 +1504,246 @@
   </vapi-widget>
   </div>
 </section>
+<!-- =========================
+     FAQ SECTION
+     Answers the exact questions people type into Google and AI
+     search tools ("how much does...", "can it..."), and the same
+     content is repeated below as FAQPage schema so Google/AI can
+     read it directly and show it as a rich result.
+========================= -->
+<style>
+  .faq-section {
+    padding: 80px 24px;
+    background: #f6f9fc;
+  }
+  .faq-container {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+  .faq-container > .section-label {
+    display: block;
+    text-align: center;
+    color: #0b72a8;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+  .faq-container > h2 {
+    text-align: center;
+    color: #092b4c;
+    margin-bottom: 40px;
+  }
+  .faq-item {
+    background: #ffffff;
+    border: 1px solid #dbe6ee;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    padding: 4px 22px;
+  }
+  .faq-item summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 18px 0;
+    font-weight: 600;
+    color: #092b4c;
+    font-size: 1.05rem;
+    position: relative;
+    padding-right: 30px;
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item summary::after {
+    content: "+";
+    position: absolute;
+    right: 0;
+    top: 16px;
+    font-size: 1.4rem;
+    color: #0b72a8;
+  }
+  .faq-item[open] summary::after {
+    content: "\2212";
+  }
+  .faq-item p {
+    color: #3d5670;
+    line-height: 1.6;
+    padding-bottom: 20px;
+    margin: 0;
+  }
+</style>
+<section class="faq-section" id="faq">
+  <div class="faq-container">
+    <span class="section-label">FAQ</span>
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq-item">
+      <summary>How much does an AI voice agent cost?</summary>
+      <p>
+        OmniCall Solutions offers three plans: Starter at $199/month
+        with 300 call minutes, Gold at $299/month with 700 call
+        minutes, and Premium at $449/month with 1,200 call minutes.
+        Every plan includes a custom AI voice agent that answers
+        calls, captures customer details, and sends you instant
+        notifications.
+      </p>
+    </details>
+    <details class="faq-item">
+      <summary>Can the AI agent handle bookings and orders, not just calls?</summary>
+      <p>
+        Yes. Beyond answering calls 24/7, the agent can capture
+        customer details, handle inquiries, take orders, and manage
+        booking requests, then send you a detailed email notification
+        within seconds of each call.
+      </p>
+    </details>
+    <details class="faq-item">
+      <summary>Does it work outside normal business hours?</summary>
+      <p>
+        Yes, that's the core benefit. Your AI receptionist is
+        available around the clock, so customer calls are answered
+        even nights, weekends, and holidays instead of going to
+        voicemail.
+      </p>
+    </details>
+    <details class="faq-item">
+      <summary>Do I need a new phone number to use this?</summary>
+      <p>
+        It depends on your setup and country. OmniCall Solutions can
+        guide you through selecting a local or other business number,
+        which may be subject to country-specific regulatory and
+        eligibility requirements before it can be provisioned.
+      </p>
+    </details>
+    <details class="faq-item">
+      <summary>Can I get a custom plan instead of the standard tiers?</summary>
+      <p>
+        Yes. OmniCall Solutions can build a custom plan with monthly
+        minutes, call flow, and features designed around your
+        specific business workflow. Reach out through the contact
+        section to discuss your needs.
+      </p>
+    </details>
+    <details class="faq-item">
+      <summary>How do I try it before subscribing?</summary>
+      <p>
+        Use the "Try AI Demo" button on this page to talk to the
+        OmniCall AI assistant directly in your browser, by voice or
+        by chat, before choosing a plan.
+      </p>
+    </details>
+  </div>
+</section>
+<!-- =========================
+     STRUCTURED DATA (schema.org JSON-LD)
+     This doesn't change how the page looks — it's a machine-readable
+     summary of the business and its plans that Google and AI search
+     tools read directly, which is what allows rich results (star
+     ratings, pricing, FAQs) to show up in search instead of just a
+     plain blue link.
+========================= -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "OmniCall Solutions",
+  "url": "https://omnicallsolutions.online/",
+  "logo": "https://omnicallsolutions.online/logo.png",
+  "email": "support@omnicallsolutions.online",
+  "description": "Custom AI voice agents that automate business calls 24/7 — answering calls, capturing customer details, handling inquiries, orders and booking requests.",
+  "sameAs": []
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "AI Voice Agent for Business",
+  "provider": {
+    "@type": "Organization",
+    "name": "OmniCall Solutions",
+    "url": "https://omnicallsolutions.online/"
+  },
+  "description": "Automate your business calls 24/7 with custom AI voice agents that answer calls, capture customer details, handle inquiries, orders and booking requests, and send instant email notifications.",
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Starter",
+      "price": "199",
+      "priceCurrency": "USD",
+      "description": "300 call minutes per month"
+    },
+    {
+      "@type": "Offer",
+      "name": "Gold",
+      "price": "299",
+      "priceCurrency": "USD",
+      "description": "700 call minutes per month"
+    },
+    {
+      "@type": "Offer",
+      "name": "Premium",
+      "price": "449",
+      "priceCurrency": "USD",
+      "description": "1,200 call minutes per month"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does an AI voice agent cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "OmniCall Solutions offers three plans: Starter at $199/month with 300 call minutes, Gold at $299/month with 700 call minutes, and Premium at $449/month with 1,200 call minutes. Every plan includes a custom AI voice agent that answers calls, captures customer details, and sends instant notifications."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can the AI agent handle bookings and orders, not just calls?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Beyond answering calls 24/7, the agent can capture customer details, handle inquiries, take orders, and manage booking requests, then send a detailed email notification within seconds of each call."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work outside normal business hours?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The AI receptionist is available around the clock, so customer calls are answered even nights, weekends, and holidays instead of going to voicemail."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need a new phone number to use this?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on setup and country. OmniCall Solutions can guide customers through selecting a local or other business number, which may be subject to country-specific regulatory and eligibility requirements before it can be provisioned."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I get a custom plan instead of the standard tiers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. OmniCall Solutions can build a custom plan with monthly minutes, call flow, and features designed around a specific business workflow."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I try it before subscribing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use the Try AI Demo button on the homepage to talk to the OmniCall AI assistant directly in the browser, by voice or by chat, before choosing a plan."
+      }
+    }
+  ]
+}
+</script>
 <!-- =========================
      FINAL CTA
 ========================= -->
